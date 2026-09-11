@@ -1,5 +1,7 @@
 # Elastic Maps Data
 
+![Map with airport outlines and layers](./screenshots/2026-09-11-map-with-airport-outlines-and-layers.png)
+
 This repository contains geospatial datasets in [GeoJSON](https://geojson.org/) format, intended for use with [Elastic Maps](https://www.elastic.co/guide/en/kibana/current/maps.html) / Kibana geo visualizations, or any other tool that consumes GeoJSON.
 
 ## Contents
@@ -58,6 +60,22 @@ These files can be loaded directly into Elastic Maps as a layer, indexed into El
 # Example: index a GeoJSON file into Elasticsearch using elasticsearch-loader or a similar tool
 elasticsearch_loader --index airports --type _doc geojson airports.geojson
 ```
+
+### Add satellite imagery as a basemap (MapTiler)
+
+To use satellite imagery as a background layer, you can add the [MapTiler Satellite](https://www.maptiler.com/maps/satellite/) tile service as a **Tile Map Service** in [Elastic Maps](https://www.elastic.co/docs/explore-analyze/visualize/maps/tile-layer):
+
+1. Create a free account at [cloud.maptiler.com](https://cloud.maptiler.com/) and generate an API key.
+2. In Kibana, open **Maps** → **Add layer** → select **Tile Map Service**.
+3. Enter the following URL template (replace with your own API key):
+
+   ```
+   https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=<YOUR_API_KEY>
+   ```
+
+4. Save the layer — the satellite tiles will now appear as a basemap underneath your own GeoJSON layers (e.g. `airports.geojson`).
+
+> Note: The free MapTiler tier has a limited monthly tile quota. For production or high-traffic deployments, review the appropriate MapTiler plan and check the license terms for satellite imagery.
 
 ## Notes
 
